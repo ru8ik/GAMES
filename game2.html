@@ -14,11 +14,12 @@
     var ballY = 75;
     var ballSpeedX = 5;
     //ballSpeedY if increaset make bug on the paddle (after 1 miss the paddle become "transperent")
-    var ballSpeedY = 7;
+    var ballSpeedY = 6;
     
     const BRICK_W = 100;
     const BRICK_H = 50;
-    const BRICK_COUNT = 4;
+    const BRICK_COUNT = 8;
+    var brickGrid = new Array(BRICK_COUNT);
     
     const PADDLE_WIDTH = 100;
     const PADDLE_THICKNESS = 10;
@@ -44,6 +45,17 @@
         paddleX = mouseX-PADDLE_WIDTH/2;
     }
     
+    
+    function brickReset(){
+     for(var i=0; i<BRICK_COUNT; i++){
+       if(Math.random() <0.5){
+        brickGrid[i] = true;
+        }else{
+            brickGrid[i] =false;
+  }// endof else (random check)
+ }//end of FOR each brick
+}//end of brickReset function 
+    
     window.onload = function() {
         canvas = document.getElementById('gameCanvas');
         canvasContext = canvas.getContext('2d');
@@ -54,7 +66,7 @@
         
         canvas.addEventListener('mousemove', updateMousePos);
         
-        
+        brickReset();
         
     }
     
@@ -113,14 +125,21 @@
             var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
             
             ballSpeedX = ballDistFromPaddleCenterX * 0.35;
-        }
-        
-        
+        }    
     }
     
+    
+    
+    
     function drawBricks(){
-        colorRect(0,0, BRICK_W,BRICK_H, 'green');
-    }
+        for(var i = 0; i<BRICK_COUNT; i++){
+            if(brickGrid[i]){
+                colorRect(BRICK_W*i,0, BRICK_W - 2,BRICK_H, 'green'  )
+            }//end of is this brick here
+        }//end of FOR each brick
+    }// end of drawBricks function 
+    
+    
     
     function drawAll(){
         //black all the canvas each frame to make it looks like the ball moves and not drawns
